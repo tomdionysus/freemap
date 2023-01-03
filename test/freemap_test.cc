@@ -80,6 +80,67 @@ TEST(FreemapTest, AllocateDeallocate16Bits) {
   freemap_destroy(map);
 }
 
+
+// Check / Deallocate Out of Range
+TEST(FreemapTest, CheckDeallocateOutOfRange) {
+  // Result general
+  freemap_result_t res;
+
+  // Make a new freemap
+  freemap_t *map = freemap_new(16);
+
+  // Initial state checks
+  EXPECT_NE(map->bitmap, nullptr);
+  EXPECT_EQ(map->total, 16);
+  EXPECT_EQ(map->free, 16);
+
+  // Allocate 8 blocks
+  for(uint8_t i=0; i<16; i+=2) {
+    res = freemap_allocate(map);
+    EXPECT_EQ(res.status, FREEMAP_STATUS_SUCCESS | FREEMAP_STATUS_ALLOCATED);
+    EXPECT_EQ(res.block, i/2);
+    EXPECT_EQ(res.map, map);
+    EXPECT_EQ(map->free, 15-(i/2));
+  }
+
+  // Check block 7,8
+  res = freemap_check(map, 7);
+  EXPECT_EQ(res.status, FREEMAP_STATUS_SUCCESS | FREEMAP_STATUS_ALLOCATED);
+  EXPECT_EQ(res.block, 7);
+  EXPECT_EQ(res.map, map);
+
+  res = freemap_check(map, 8);
+  EXPECT_EQ(res.status, FREEMAP_STATUS_SUCCESS | FREEMAP_STATUS_DEALLOCATED);
+  EXPECT_EQ(res.block, 8);
+  EXPECT_EQ(res.map, map);
+
+  // Expect free space to be eight
+  EXPECT_EQ(map->free, 8);
+
+  // Expect next allocation to be 8
+  res = freemap_allocate(map);
+  EXPECT_EQ(res.status, FREEMAP_STATUS_SUCCESS | FREEMAP_STATUS_ALLOCATED);
+  EXPECT_EQ(res.block, 8);
+  EXPECT_EQ(res.map, map);
+  EXPECT_EQ(map->free, 7);
+
+  // Deallocate a block past the end
+  res = freemap_deallocate(map, 16);
+  EXPECT_EQ(res.status, FREEMAP_STATUS_FAILURE);
+  EXPECT_EQ(res.block, 16);
+  EXPECT_EQ(res.map, map);
+  EXPECT_EQ(map->free, 7);
+
+  // Check a block past the end 
+  res = freemap_check(map, 16);
+  EXPECT_EQ(res.status, FREEMAP_STATUS_FAILURE);
+  EXPECT_EQ(res.block, 16);
+  EXPECT_EQ(res.map, map);
+
+  // Cleanup
+  freemap_destroy(map);
+}
+
 // Allocate / Deallocate Larger than 48 bits
 TEST(FreemapTest, AllocateDeallocate48Bits) {
   // Result general

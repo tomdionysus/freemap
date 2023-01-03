@@ -15,6 +15,13 @@ freemap_result_t freemap_check(freemap_t *map, uint32_t block) {
 	freemap_result_t result;
 	result.map = map;
 
+	// Detect overflow
+	if(block > map->total-1) {
+		result.status = FREEMAP_STATUS_FAILURE;
+		result.block = block;
+		return result;
+	}
+
 	uint32_t offset = (block / FREEMAP_BITS);
 	uint8_t bit = (block % FREEMAP_BITS);
 	freemap_store_type_t checkword = map->bitmap[offset];
@@ -60,6 +67,13 @@ freemap_result_t freemap_allocate(freemap_t *map) {
 freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block) {
 	freemap_result_t result;
 	result.map = map;
+
+	// Detect overflow
+	if(block > map->total-1) {
+		result.status = FREEMAP_STATUS_FAILURE;
+		result.block = block;
+		return result;
+	}
 
 	uint32_t offset = (block / FREEMAP_BITS);
 	uint8_t bit = (block % FREEMAP_BITS);
