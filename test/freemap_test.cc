@@ -5,7 +5,7 @@ extern "C" {
 }
 
 // Instantiate, check 
-TEST(FreemapTest, Instantiation) {
+TEST(FreemapTest, NewDestroy) {
   freemap_t *map = freemap_new(127);
 
   EXPECT_NE(map->bitmap, nullptr);
@@ -13,19 +13,6 @@ TEST(FreemapTest, Instantiation) {
   EXPECT_EQ(map->free, 127);
 
   freemap_destroy(map);
-}
-
-// Freemap _firstfree
-TEST(FreemapTest, FirstFree) {
-  EXPECT_EQ(_freemap_firstfree(0), 0);
-  EXPECT_EQ(_freemap_firstfree(1), 1);
-  EXPECT_EQ(_freemap_firstfree(0b1111), 4);
-  EXPECT_EQ(_freemap_firstfree(0b1011), 2);
-
-
-  EXPECT_EQ(_freemap_firstfree(0b11111111), 8);
-
-
 }
 
 // Allocate / Deallocate
@@ -287,8 +274,37 @@ TEST(FreemapTest, AllocateDeallocate113Bits) {
   freemap_destroy(map);
 }
 
+// Allocate / Deallocate
+TEST(FreemapTest, Sync) {
+  // Result general
+  freemap_result_t res;
+
+  // Make a new freemap
+  freemap_t *map = freemap_new(110);
+
+  // Set the first word (32 or 64 bits) to 11111....
+  map->bitmap[0] = FREEMAP_FULL;
+  map->bitmap[1] = 0UL;
+
+  EXPECT_EQ(freemap_sync(map, 110), 110-FREEMAP_BITS);
+  EXPECT_EQ(map->free, 110-FREEMAP_BITS);
+
+  // Cleanup
+  freemap_destroy(map);
+}
+
+// Freemap _firstfree
+TEST(FreemapTest, FirstFree) {
+  EXPECT_EQ(_freemap_firstfree(0), 0);
+  EXPECT_EQ(_freemap_firstfree(1), 1);
+  EXPECT_EQ(_freemap_firstfree(0b1111), 4);
+  EXPECT_EQ(_freemap_firstfree(0b1011), 2);
+
+  EXPECT_EQ(_freemap_firstfree(0b11111111), 8);
+}
+
 // Hamming Test
-TEST(FreemapTest, FreemapHamming) {
+TEST(FreemapTest, Hamming) {
     EXPECT_EQ(FREEMAP_HAMMING(0), 0);
     EXPECT_EQ(FREEMAP_HAMMING(0xFF), 8);
     EXPECT_EQ(FREEMAP_HAMMING(0xFFFF), 16);

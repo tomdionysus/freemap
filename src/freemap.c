@@ -5,7 +5,7 @@
 
 freemap_t *freemap_new(uint32_t blocks) {
 	freemap_t *map = (freemap_t*)malloc(sizeof(freemap_t));
-	map->bitmap = (freemap_store_type_t*)calloc(blocks/FREEMAP_BITS+(FREEMAP_BITS/sizeof(freemap_store_type_t)),1);
+	map->bitmap = (freemap_store_type_t*)calloc(blocks/FREEMAP_BITS,1);
 	map->total = blocks;
 	map->free = blocks;
 	return map;
@@ -97,10 +97,10 @@ freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block) {
 
 uint32_t freemap_sync(freemap_t *map, uint32_t total) {
 	map->total = total;
-	map->free = 0;
-	for(uint32_t offset = 0; offset < (map->total / FREEMAP_BITS + 1) && map->free != 0; offset++) {
+	map->free = total;
+	for(uint32_t offset = 0; offset < (map->total / FREEMAP_BITS); offset++) {
 		freemap_store_type_t cw = map->bitmap[offset];
-		map->free += (cw != FREEMAP_FULL) ? FREEMAP_BITS : FREEMAP_HAMMING(cw);
+		map->free -= FREEMAP_HAMMING(cw & FREEMAP_FULL);
 	}
 	return map->free;
 }
