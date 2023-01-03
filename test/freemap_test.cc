@@ -286,3 +286,15 @@ TEST(FreemapTest, AllocateDeallocate113Bits) {
   // Cleanup
   freemap_destroy(map);
 }
+
+// Hamming Test
+TEST(FreemapTest, FreemapHamming) {
+    EXPECT_EQ(FREEMAP_HAMMING(0), 0);
+    EXPECT_EQ(FREEMAP_HAMMING(0xFF), 8);
+    EXPECT_EQ(FREEMAP_HAMMING(0xFFFF), 16);
+    EXPECT_EQ(FREEMAP_HAMMING(0xAAAA), 8);
+
+    EXPECT_EQ(FREEMAP_HAMMING(0xFFFFFFFF), 32);
+    EXPECT_EQ(FREEMAP_HAMMING(0xAAAAAAAA), 16);
+    EXPECT_EQ(FREEMAP_HAMMING(0xAAAA5555), 16);
+}

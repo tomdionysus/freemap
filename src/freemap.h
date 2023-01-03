@@ -13,10 +13,13 @@
 
 #ifdef FREEMAP_ENVIRONMENT32
 typedef uint32_t freemap_store_type_t;
+#define FREEMAP_HAMMING(x) __builtin_popcountl(x)
 #endif // FREEMAP_ENVIRONMENT32
 
 #ifdef FREEMAP_ENVIRONMENT64
 typedef uint64_t freemap_store_type_t;
+#define FREEMAP_HAMMING(x) __builtin_popcountll(x)
+
 #endif // FREEMAP_ENVIRONMENT64
 
 #define FREEMAP_BITS (sizeof(freemap_store_type_t)*8)
@@ -39,8 +42,10 @@ freemap_result_t freemap_check(freemap_t *map, uint32_t block);
 freemap_result_t freemap_allocate(freemap_t *map);
 freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block);
 uint32_t freemap_sizeof(freemap_t *map);
+uint32_t freemap_sync(freemap_t *map, uint32_t total);
 void freemap_destroy(freemap_t *map);
 
 uint8_t _freemap_firstfree(freemap_store_type_t num);
+uint8_t _freemap_hamming(freemap_store_type_t num);
 
 #endif // FREEMAP

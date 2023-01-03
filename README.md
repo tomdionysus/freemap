@@ -92,10 +92,12 @@ If the specified block is larger than the total number of blocks in the freemap,
 
 ### `uint32_t freemap_sizeof(freemap_t *map)`
 
-Return the size in bytes of the current bitmap. This can be used with `freemap_t->bitmap` to load and save the bitmap.
+Return the size in bytes of the current bitmap. This can be used with `freemap_t->bitmap` to load and save the bitmap - be careful to sync the new bitmap using the `freemap_sync` function once loaded.
+
+### `uint32_t freemap_sync(freemap_t *map, uint32_t total)`
 
 ### `void freemap_destroy(freemap_t *map)`
 
 Free the memory used by the freemap. 
 
-**CAVEAT** Do not deference the map pointer once you have called this function.
+**CAVEAT:** Do not deference the map pointer once you have called this function.

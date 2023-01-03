@@ -44,6 +44,12 @@ freemap_result_t freemap_allocate(freemap_t *map) {
 		freemap_store_type_t cw = map->bitmap[offset];
 		if(cw != FREEMAP_FULL) {
 			uint8_t bit = _freemap_firstfree(cw);
+
+			if(bit==0xFF) {
+				// In theory this can't happen, something has gone badly wrong.
+				result.status = FREEMAP_STATUS_FAILURE;
+				return result;
+			}
 			
 			if(offset * FREEMAP_BITS + bit >= map->total) break;
 
@@ -87,6 +93,16 @@ freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block) {
 	map->bitmap[offset] &= (freemap_store_type_t)(~(1UL << bit));
 
 	return result;
+}
+
+uint32_t freemap_sync(freemap_t *map, uint32_t total) {
+	map->total = total;
+	map->free = 0;
+	for(uint32_t offset = 0; offset < (map->total / FREEMAP_BITS + 1) && map->free != 0; offset++) {
+		freemap_store_type_t cw = map->bitmap[offset];
+		map->free += (cw != FREEMAP_FULL) ? FREEMAP_BITS : FREEMAP_HAMMING(cw);
+	}
+	return map->free;
 }
 
 void freemap_destroy(freemap_t *map) {
