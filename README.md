@@ -101,6 +101,8 @@ Return the size in bytes of the current bitmap. This can be used with `freemap_t
 
 ### `uint32_t freemap_sync(freemap_t *map, uint32_t total)`
 
+Recompute the free blocks available after directly modifying the bitmap. Returns the number of free blocks.
+
 ### `void freemap_destroy(freemap_t *map)`
 
 Free the memory used by the freemap. 
