@@ -8,10 +8,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_CXX_STANDARD 14)
 
 include(FetchContent)
-include_directories(
-  ${CMAKE_BINARY_DIR}/src
-  ${CMAKE_BINARY_DIR}/lib
-)
 
 FetchContent_Declare(
   googletest
@@ -40,3 +36,8 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(freemap_test)
+
+include_directories(
+  ${CMAKE_BINARY_DIR}/src
+  ${CMAKE_BINARY_DIR}/lib
+)

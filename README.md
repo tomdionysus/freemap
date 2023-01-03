@@ -1,5 +1,7 @@
 # freemap
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A minimal C library to store a bitmap of free space (blocks, sectors etc). Freemap detects a 32 or 64 bit architecture and will compile to use the system width efficiently.
 
 ## Building
