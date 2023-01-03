@@ -74,7 +74,7 @@ Create a new freemap to store the status of the specified number of blocks and r
 
 Check t
 
-### `freemap_result_t freemap_allocate(freemap_t *map);`
+### `freemap_result_t freemap_allocate(freemap_t *map)`
 
 Allocate the next available block. If successful, the `freemap_result_t` will have `FREEMAP_STATUS_SUCCESS` and `FREEMAP_STATUS_ALLOCATED` flags on the `status` field set. The `block` field will contain the allocated block number. 
 
@@ -82,15 +82,15 @@ If there are no blocks to allocate, the `freemap_result_t` will have `FREEMAP_ST
 
 Blocks are numbered from `0` so in a 64 block freemap, the number of the blocks will range from `0-63`. 
 
-### `freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block);`
+### `freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block)`
 
 Deallocate a specified block. The `freemap_result_t` status will always have `FREEMAP_STATUS_SUCCESS` set, whether the specified block was allocated or not can be seen from the `FREEMAP_STATUS_ALLOCATED` and `FREEMAP_STATUS_DEALLOCATED` flags on the `status` field of the result.
 
-### `uint32_t freemap_sizeof(freemap_t *map);`
+### `uint32_t freemap_sizeof(freemap_t *map)`
 
 Return the size in bytes of the current bitmap. This can be used with `freemap_t->bitmap` to load and save the bitmap.
 
-### `void freemap_destroy(freemap_t *map);`
+### `void freemap_destroy(freemap_t *map)`
 
 Free the memory used by the freemap. 
 
