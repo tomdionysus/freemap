@@ -72,7 +72,7 @@ Create a new freemap to store the status of the specified number of blocks and r
 
 ### `freemap_result_t freemap_check(freemap_t *map, uint32_t block);`
 
-Check t
+Return a result specifying whether the specified block is allocated. If successful, the `freemap_result_t` will have `FREEMAP_STATUS_SUCCESS` and either the `FREEMAP_STATUS_ALLOCATED` or `FREEMAP_STATUS_DEALLOCATED` flags on the `status` field will be set. The `block` field will contain the block number. 
 
 ### `freemap_result_t freemap_allocate(freemap_t *map)`
 
@@ -84,7 +84,7 @@ Blocks are numbered from `0` so in a 64 block freemap, the number of the blocks 
 
 ### `freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block)`
 
-Deallocate a specified block. The `freemap_result_t` status will always have `FREEMAP_STATUS_SUCCESS` set, whether the specified block was allocated or not can be seen from the `FREEMAP_STATUS_ALLOCATED` and `FREEMAP_STATUS_DEALLOCATED` flags on the `status` field of the result.
+Deallocate a specified block. The `freemap_result_t` status will always have `FREEMAP_STATUS_SUCCESS` set, whether the specified block was allocated or not can be seen from the `FREEMAP_STATUS_ALLOCATED` and `FREEMAP_STATUS_DEALLOCATED` flags on the `status` field of the result. The `block` field will contain the block number.
 
 ### `uint32_t freemap_sizeof(freemap_t *map)`
 
