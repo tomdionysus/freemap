@@ -1,4 +1,5 @@
 *.cmake
+build/*
 lib/*
 gcoverage/*
 CMakeCache.txt
