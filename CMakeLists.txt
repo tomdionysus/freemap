@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 project(freemap)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-
 # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 14)
 
@@ -26,7 +23,7 @@ enable_testing()
 
 add_executable(
   freemap_test
-  test/freemap_test.cc
+  src/freemap_test.cc
 )
 target_link_libraries(
   freemap_test

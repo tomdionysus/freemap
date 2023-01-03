@@ -9,26 +9,29 @@ A minimal C library to store a bitmap of free space (blocks, sectors etc). Freem
 freemap uses [CMake](https://cmake.org/) so building is trivial:
 
 ```bash
-git clone https://github.com/tomdionysus/freemap.git
-cd freemap
-cmake .
+mkdir build
+cd build
+cmake ..
 make
 ```
 
-You'll find the `libfreemap.a` in the `lib` folder. 
+You'll find the `libfreemap.a` in the `build/lib` folder. 
 
 ## Testing
 
 freemap uses [GoogleTest](https://github.com/google/googletest) which is installed by **CMake**:
 
-```
+```bash
+mkdir build
+cd build
+cmake ..
 make
-build/freemap_test
+./freemap_test
 ```
 
 ## Constants
 
-```
+```C
 FREEMAP_STATUS_SUCCESS 		0b00000001
 FREEMAP_STATUS_FAILURE 		0b00000010
 FREEMAP_STATUS_ALLOCATED   	0b00000100
@@ -41,7 +44,7 @@ These constants are used as flags of of the `status` field in `freemap_result_t`
 
 ### `freemap_t`
 
-```
+```C
 struct {
 	freemap_store_type_t *bitmap;
 	uint32_t total;
@@ -54,7 +57,7 @@ struct {
 
 ### `freemap_result_t`
 
-```
+```C
 struct {
 	uint8_t status;
 	uint32_t block;
