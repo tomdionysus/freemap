@@ -76,6 +76,7 @@ freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block) {
 }
 
 void freemap_destroy(freemap_t *map) {
+	free(map->bitmap);
 	free(map);
 }
 
