@@ -1,6 +1,7 @@
 *.cmake
-bin/*
+build/*
 lib/*
+gcoverage/*
 CMakeCache.txt
 CMakeFiles/*
 Makefile
