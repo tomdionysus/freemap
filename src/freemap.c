@@ -79,6 +79,10 @@ void freemap_destroy(freemap_t *map) {
 	free(map);
 }
 
+uint32_t freemap_sizeof(freemap_t *map) {
+	return map->total * sizeof(freemap_store_type_t);
+}
+
 uint8_t _freemap_firstfree(freemap_store_type_t num) {
 	for(uint8_t i=0; i<FREEMAP_BITS; i++) {
 		if(!(num & (1UL << i))) return i;

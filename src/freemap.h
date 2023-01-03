@@ -38,6 +38,7 @@ freemap_t *freemap_new(uint32_t blocks);
 freemap_result_t freemap_check(freemap_t *map, uint32_t block);
 freemap_result_t freemap_allocate(freemap_t *map);
 freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block);
+uint32_t freemap_sizeof(freemap_t *map);
 void freemap_destroy(freemap_t *map);
 
 uint8_t _freemap_firstfree(freemap_store_type_t num);
