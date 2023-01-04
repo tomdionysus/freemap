@@ -276,9 +276,6 @@ TEST(FreemapTest, AllocateDeallocate113Bits) {
 
 // Allocate / Deallocate
 TEST(FreemapTest, Sync) {
-  // Result general
-  freemap_result_t res;
-
   // Make a new freemap
   freemap_t *map = freemap_new(110);
 
