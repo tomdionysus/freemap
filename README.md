@@ -73,13 +73,17 @@ Freemap stores whether blocks on an arbitary resource are free or not, packed in
 
 ### freemap_new
 
-`freemap_t *freemap_new(uint32_t blocks)`
+```C
+freemap_t *freemap_new(uint32_t blocks)
+```
 
 Create a new freemap to store the status of the specified number of blocks and return a pointer to it.
 
 ### freemap_check
 
-`freemap_result_t freemap_check(freemap_t *map, uint32_t block);`
+```C
+freemap_result_t freemap_check(freemap_t *map, uint32_t block)
+```
 
 Return a result specifying whether the specified block is allocated. If successful, the `freemap_result_t` will have `FREEMAP_STATUS_SUCCESS` and either the `FREEMAP_STATUS_ALLOCATED` or `FREEMAP_STATUS_DEALLOCATED` flags on the `status` field will be set. The `block` field will contain the block number. 
 
@@ -87,7 +91,9 @@ If the specified block is larger than the total number of blocks in the freemap,
 
 ### freemap_allocate
 
-`freemap_result_t freemap_allocate(freemap_t *map)`
+```C
+freemap_result_t freemap_allocate(freemap_t *map)
+```
 
 Allocate the next available block. If successful, the `freemap_result_t` will have `FREEMAP_STATUS_SUCCESS` and `FREEMAP_STATUS_ALLOCATED` flags on the `status` field set. The `block` field will contain the allocated block number. 
 
@@ -97,7 +103,9 @@ Blocks are numbered from `0` so in a 64 block freemap, the number of the blocks 
 
 ### freemap_deallocate
 
-`freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block)`
+```C
+freemap_result_t freemap_deallocate(freemap_t *map, uint32_t block)
+```
 
 Deallocate a specified block. On success, the `freemap_result_t` status will have `FREEMAP_STATUS_SUCCESS` set - whether the specified block was allocated or not can be seen from the `FREEMAP_STATUS_ALLOCATED` and `FREEMAP_STATUS_DEALLOCATED` flags on the `status` field of the result. The `block` field will contain the block number.
 
@@ -105,19 +113,25 @@ If the specified block is larger than the total number of blocks in the freemap,
 
 ### freemap_sizeof
 
-`uint32_t freemap_sizeof(freemap_t *map)`
+```C
+uint32_t freemap_sizeof(freemap_t *map)
+```
 
 Return the size in bytes of the current bitmap. This can be used with `freemap_t->bitmap` to load and save the bitmap - be careful to sync the new bitmap using the `freemap_sync` function once loaded.
 
 ### freemap_sync
 
-`uint32_t freemap_sync(freemap_t *map, uint32_t total)`
+```C
+uint32_t freemap_sync(freemap_t *map, uint32_t total)
+```
 
 Recompute the free blocks available after directly modifying the bitmap. Returns the number of free blocks.
 
 ### freemap_destroy
 
-`void freemap_destroy(freemap_t *map)`
+```C
+void freemap_destroy(freemap_t *map)
+```
 
 Free the memory used by the freemap. 
 
